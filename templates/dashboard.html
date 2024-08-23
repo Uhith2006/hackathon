@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h2>Admin Dashboard</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Location</th>
+                <th>Population</th>
+                <th>Energy Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for survey in surveys %}
+                <tr>
+                    <td>{{ survey[0] }}</td>
+                    <td>{{ survey[1] }}</td>
+                    <td>{{ survey[2] }}</td>
+                    <td>{{ survey[3] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

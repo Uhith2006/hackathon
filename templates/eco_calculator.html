@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h2>Eco Calculator</h2>
+    <form method="POST" action="{{ url_for('eco_calculator') }}">
+        <label for="wood">Wood usage (kg per month):</label>
+        <input type="number" id="wood" name="wood" step="0.1" required><br><br>
+
+        <label for="charcoal">Charcoal usage (kg per month):</label>
+        <input type="number" id="charcoal" name="charcoal" step="0.1" required><br><br>
+
+        <label for="kerosene">Kerosene usage (liters per month):</label>
+        <input type="number" id="kerosene" name="kerosene" step="0.1" required><br><br>
+
+        <input type="submit" value="Calculate Carbon Footprint">
+    </form>
+
+    {% if result %}
+        <div class="results">
+            <h3>Results:</h3>
+            <p>Wood Carbon Footprint: {{ result.wood_footprint }} kg CO2</p>
+            <p>Charcoal Carbon Footprint: {{ result.charcoal_footprint }} kg CO2</p>
+            <p>Kerosene Carbon Footprint: {{ result.kerosene_footprint }} kg CO2</p>
+            <p>Total Carbon Footprint: {{ result.total_footprint }} kg CO2</p>
+        </div>
+    {% endif %}
+{% endblock %}

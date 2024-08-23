@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rural Energy App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Welcome to the Rural Energy App</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('submit_data') }}">Submit Data</a></li>
+                    <li><a href="{{ url_for('dashboard') }}">Admin Dashboard</a></li>
+                    <li><a href="{{ url_for('eco_calculator') }}">Eco Calculator</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+        <!-- Main content goes here -->
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

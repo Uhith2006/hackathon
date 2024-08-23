@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h2>Submit Data</h2>
+    <form method="POST" action="{{ url_for('submit_data') }}">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+        <button type="button" onclick="geocodeAddress()">Go</button>
+        
+        <label for="population">Population:</label>
+        <input type="number" id="population" name="population" required>
+        
+        <label for="energy_source">Energy Source:</label>
+        <input type="text" id="energy_source" name="energy_source" required>
+        
+        <label for="map">Select Location:</label>
+        <div id="map" style="height: 400px; width: 100%;"></div>
+        <input type="hidden" id="lat" name="lat">
+        <input type="hidden" id="lng" name="lng">
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Load Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8S23P0SE_MBsWE7OZHNjXNhi80KL_pcc&callback=initMap" ></script>
+
+    <script>
+        let map;
+        let marker;
+        let geocoder;
+
+        function initMap() {
+            // Initialize the map and set default center and zoom level
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8
+            });
+
+            // Add a marker and store its reference
+            marker = new google.maps.Marker({
+                map: map,
+                position: { lat: -34.397, lng: 150.644 },
+                draggable: true
+            });
+
+            // Initialize the geocoder
+            geocoder = new google.maps.Geocoder();
+
+            // Event listener to update hidden input fields when marker is moved
+            google.maps.event.addListener(marker, 'position_changed', () => {
+                const position = marker.getPosition();
+                document.getElementById('lat').value = position.lat();
+                document.getElementById('lng').value = position.lng();
+            });
+
+            // Event listener to update the map center and marker position when a new location is chosen
+            google.maps.event.addListener(map, 'click', (event) => {
+                marker.setPosition(event.latLng);
+                document.getElementById('lat').value = event.latLng.lat();
+                document.getElementById('lng').value = event.latLng.lng();
+            });
+        }
+
+        function geocodeAddress() {
+            const address = document.getElementById('location').value;
+            geocoder.geocode({ address: address }, (results, status) => {
+                if (status === 'OK') {
+                    const location = results[0].geometry.location;
+                    map.setCenter(location);
+                    marker.setPosition(location);
+                    document.getElementById('lat').value = location.lat();
+                    document.getElementById('lng').value = location.lng();
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    </script>
+{% endblock %}

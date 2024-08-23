@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps Integration</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8S23P0SE_MBsWE7OZHNjXNhi80KL_pcc&libraries=places&callback=initMap" async defer></script>
+    <script>
+        let map;
+        let geocoder;
+        let marker;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8
+            });
+            geocoder = new google.maps.Geocoder();
+            marker = new google.maps.Marker({
+                map: map
+            });
+        }
+
+        function geocodeAddress() {
+            const address = document.getElementById('location').value;
+            geocoder.geocode({ address: address }, function(results, status) {
+                if (status === 'OK') {
+                    const location = results[0].geometry.location;
+                    map.setCenter(location);
+                    marker.setPosition(location);
+                    map.setZoom(12);
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>Google Maps Integration</h2>
+    <input type="text" id="location" placeholder="Enter a location">
+    <button onclick="geocodeAddress()">Go</button>
+    <div id="map" style="height: 500px; width: 100%;"></div>
+</body>
+</html>
